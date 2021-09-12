@@ -16,7 +16,7 @@ import { Response } from 'express';
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService) { }
 
   @Post()
   async create(@Body() createUserDto: CreateUserDto, @Res() res: Response) {
@@ -32,7 +32,9 @@ export class UserController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+    const user = this.userService.findOne(+id)
+
+    return user;
   }
 
   @Patch(':id')

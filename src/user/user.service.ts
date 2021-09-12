@@ -1,21 +1,25 @@
 import { Injectable } from '@nestjs/common';
-import { Connection } from 'typeorm';
+import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 
 import * as jwt from 'jsonwebtoken';
-import * as yup from 'yup';
 import * as bcrypt from 'bcrypt';
+import * as yup from 'yup';
+import { InjectRepository } from '@nestjs/typeorm';
 
-const generateToken = (id: string) =>
+export const generateToken = (id: string) =>
   jwt.sign({ id }, 'asfdnsaklfndkjsafkjd', {
     expiresIn: '86400',
   });
 
 @Injectable()
 export class UserService {
-  constructor(private connection: Connection) {}
+  constructor(
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+  ) { }
 
   async create(newUser: CreateUserDto): Promise<any> {
     const schema = yup.object().shape({
@@ -24,12 +28,10 @@ export class UserService {
       password: yup.string().required().min(4),
     });
 
-    schema
+    return schema
       .validate(newUser)
       .then(async () => {
-        const userRepository = this.connection.getRepository(User);
-
-        const userHasExists = await userRepository.find({
+        const userHasExists = await this.userRepository.find({
           email: newUser.email,
         });
 
@@ -38,16 +40,17 @@ export class UserService {
         }
 
         const saltOrRounds = 10;
-        const password = 'random_password';
-        const password_hash = await bcrypt.hash(password, saltOrRounds);
 
-        const newuser = userRepository.create({
+        const password_hash = await bcrypt.hash(newUser.password, saltOrRounds);
+
+        const createdUser = this.userRepository.create({
           name: newUser.name,
           email: newUser.email,
           password: password_hash,
         });
 
-        const savedUser = await userRepository.save(newuser);
+        const savedUser = await this.userRepository.save(createdUser);
+
         const jwtToken = generateToken(String(savedUser.id));
 
         return {
@@ -68,27 +71,36 @@ export class UserService {
   }
 
   findAll(): Promise<User[]> {
-    const usersRepository = this.connection.getRepository(User);
-    return usersRepository.find();
+    return this.userRepository.find({ select: ['name', 'email', 'id'] });
   }
 
-  findOne(id: number) {
-    const usersRepository = this.connection.getRepository(User);
-    return usersRepository.find({ id });
+  async findOne(id: number) {
+    const user = await this.userRepository.findOne(
+      { id },
+      {
+        select: ['id', 'name', 'email'],
+      });
+
+
+    return user;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    console.log(updateUserDto);
-    return `This action updates a #${id} user`;
+  async update(
+    id: number,
+    updateUserDto: UpdateUserDto,
+  ): Promise<{ id: number; email: string; name: string }> {
+    await this.userRepository.update({ id }, updateUserDto);
+
+    return {
+      id,
+      name: updateUserDto.name,
+      email: updateUserDto.email,
+    };
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
-  }
+  async remove(id: number) {
+    await this.userRepository.delete({ id });
 
-  async closeDB() {
-    const userRepository = this.connection.getRepository(User);
-    await userRepository.clear();
-    await this.connection.close();
+    return { id };
   }
 }
