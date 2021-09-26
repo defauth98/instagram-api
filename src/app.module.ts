@@ -17,5 +17,5 @@ import { Connection, getConnectionOptions } from 'typeorm';
   providers: [],
 })
 export class AppModule {
-  constructor(private connection: Connection) {}
+  constructor(private connection: Connection) { }
 }

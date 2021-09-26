@@ -7,10 +7,12 @@
   "password": "docker",
   "database": "instagram",
   "entities": [
-    "dist/**/*.entity{.ts,.js}"
+    "dist/**/*.entity{ .ts,.js}"
   ],
-  "synchronize": true,
-  "cli": {
-    "migrationsDir": "./src/database/migrations/"
-  }
+  "synchronize": false,
+  "migrations": [
+    "dist/database/migrations/*{.ts,.js}"
+  ],
+  "migrationsTableName": "migrations_typeorm",
+  "migrationsRun": true
 }
