@@ -5,7 +5,7 @@ export class createCommentsTable1632673307060 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'posts',
+        name: 'post',
         columns: [
           {
             name: 'id',
@@ -16,19 +16,17 @@ export class createCommentsTable1632673307060 implements MigrationInterface {
           },
           { name: 'description', type: 'varchar' },
           { name: 'image_path', type: 'varchar' },
-          { name: 'created_at', type: 'timestamp' },
-          { name: 'updated_at', type: 'timestamp' },
         ],
       }),
     );
 
-    await queryRunner.addColumn('posts', new TableColumn({
-      name: 'user_id',
+    await queryRunner.addColumn('post', new TableColumn({
+      name: 'userId',
       type: 'int',
     }));
 
-    await queryRunner.createForeignKey('posts', new TableForeignKey({
-      columnNames: ['user_id'],
+    await queryRunner.createForeignKey('post', new TableForeignKey({
+      columnNames: ['userId'],
       referencedColumnNames: ['id'],
       referencedTableName: 'user',
       onDelete: 'CASCADE',
@@ -36,7 +34,7 @@ export class createCommentsTable1632673307060 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('posts');
+    await queryRunner.dropTable('post');
   }
 
 }
