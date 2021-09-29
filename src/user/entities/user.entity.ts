@@ -13,4 +13,7 @@ export class User {
 
   @Column()
   password: string;
+
+  @Column()
+  image_path: string;
 }

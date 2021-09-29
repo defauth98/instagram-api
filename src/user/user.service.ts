@@ -71,14 +71,14 @@ export class UserService {
   }
 
   findAll(): Promise<User[]> {
-    return this.userRepository.find({ select: ['name', 'email', 'id'] });
+    return this.userRepository.find({ select: ['name', 'email', 'id', 'image_path'] });
   }
 
   async findOne(id: number) {
     const user = await this.userRepository.findOne(
       { id },
       {
-        select: ['id', 'name', 'email'],
+        select: ['id', 'name', 'email', 'image_path'],
       });
 
 
@@ -88,13 +88,33 @@ export class UserService {
   async update(
     id: number,
     updateUserDto: UpdateUserDto,
-  ): Promise<{ id: number; email: string; name: string }> {
-    await this.userRepository.update({ id }, updateUserDto);
+    file: Express.Multer.File
+  ): Promise<{ id: number; email: string; name: string, image_path: string }> {
+    const image_path = `http://localhost:3333/posts/${file.filename}`
+
+    const user = await this.userRepository.findOne({ id })
+
+    if (updateUserDto.name) {
+      user.name = updateUserDto.name
+    }
+
+    if (updateUserDto.name) {
+      user.email = updateUserDto.email
+    }
+
+    if (updateUserDto.password) {
+      user.password = updateUserDto.password
+    }
+
+    user.image_path = image_path
+
+    await this.userRepository.save(user)
 
     return {
       id,
-      name: updateUserDto.name,
       email: updateUserDto.email,
+      name: updateUserDto.name,
+      image_path,
     };
   }
 

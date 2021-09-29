@@ -7,12 +7,16 @@ import {
   Param,
   Delete,
   HttpStatus,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Res } from '@nestjs/common';
 import { Response } from 'express';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
 
 @Controller('user')
 export class UserController {
@@ -38,8 +42,21 @@ export class UserController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
+  @UseInterceptors(FileInterceptor('file', {
+    storage: diskStorage({
+      destination: "./uploads",
+      filename: (_request, file, callback) => {
+        const filename = `${Date.now()}-${file.originalname}`
+
+        callback(null, filename)
+      }
+    })
+  }))
+  update(
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdateUserDto,
+    @UploadedFile() file: Express.Multer.File) {
+    return this.userService.update(+id, updateUserDto, file);
   }
 
   @Delete(':id')

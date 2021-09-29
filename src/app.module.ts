@@ -7,7 +7,6 @@ import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
-
     UserModule,
     PostsModule,
     TypeOrmModule.forRootAsync({
