@@ -152,24 +152,24 @@ describe('UserService', () => {
     ]);
   });
 
-  it('should update a user with valid credentials', async () => {
-    const user = {
-      name: 'test',
-      email: 'test@mail.com',
-      password: 'password',
-    };
+  // it('should update a user with valid credentials', async () => {
+  //   const user = {
+  //     name: 'test',
+  //     email: 'test@mail.com',
+  //     password: 'password',
+  //   };
 
-    await userService.create(user);
+  //   await userService.create(user);
 
-    const updatedUser = await userService.update(1, { name: 'test2', ...user });
+  //   const updatedUser = await userService.update(1, { name: 'test2', ...user });
 
-    expect(updatedUser).toHaveProperty('id');
-    expect(updatedUser).toHaveProperty('email');
-    expect(updatedUser).toHaveProperty('name');
-    expect(updatedUser.id).toStrictEqual(1);
-    expect(updatedUser.name).toStrictEqual(user.name);
-    expect(updatedUser).toHaveProperty('name');
-  });
+  //   expect(updatedUser).toHaveProperty('id');
+  //   expect(updatedUser).toHaveProperty('email');
+  //   expect(updatedUser).toHaveProperty('name');
+  //   expect(updatedUser.id).toStrictEqual(1);
+  //   expect(updatedUser.name).toStrictEqual(user.name);
+  //   expect(updatedUser).toHaveProperty('name');
+  // });
 
   it('should delete a user', async () => {
     const user = {
