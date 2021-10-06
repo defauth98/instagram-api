@@ -14,9 +14,11 @@ export class Post {
   @Column()
   description: string;
 
-  @Column()
-  image_path: string;
+  @Column({
+    nullable: true,
+  })
+  image_path?: string | null;
 
-  @ManyToOne(() => User, user => user.id)
+  @ManyToOne(() => User, user => user.posts)
   User: User;
 }

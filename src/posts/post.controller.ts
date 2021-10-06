@@ -33,4 +33,6 @@ export class PostController {
   findAll() {
     return this.postsService.findAll();
   }
+
+  
 }

@@ -45,9 +45,5 @@ export class PostService {
     return posts;
   }
 
-  async findByUserId() {
-    const posts = await this.postRepository.find();
-
-    return posts
-  }
+ 
 }

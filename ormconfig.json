@@ -14,5 +14,8 @@
     "dist/database/migrations/*{.ts,.js}"
   ],
   "migrationsTableName": "migrations_typeorm",
-  "migrationsRun": true
+  "migrationsRun": true,
+  "cli": {
+    "migrationsDir": "./src/database/migrations"
+}
 }
