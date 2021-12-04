@@ -10,7 +10,7 @@
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
-    "start:dev": "nest start --watch",
+    "dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
@@ -19,17 +19,19 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js",
-    "migrate":"typeorm migration:run"
-
+    "t": "node --require ts-node/register ./node_modules/typeorm/cli.js",
+    "migrate": "node --require ts-node/register ./node_modules/typeorm/cli.js PHOTO_REPOSITORYmigration:run"
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",
     "@nestjs/core": "^8.0.0",
     "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^8.0.0",
+    "@nestjs/platform-socket.io": "^8.0.10",
     "@nestjs/serve-static": "^2.2.2",
     "@nestjs/typeorm": "^8.0.2",
+    "@nestjs/websockets": "^8.0.10",
+    "@types/socket.io": "^3.0.2",
     "bcrypt": "^5.0.1",
     "jsonwebtoken": "^8.5.1",
     "nestjs-admin": "^0.4.1",
