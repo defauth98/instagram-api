@@ -17,7 +17,6 @@ export class AuthService {
   async login(loginData: LoginDTO) {
     const user = await this.userRepository.findOne({ email: loginData.email })
 
-
     if (!user) {
       return {
         message: "User not found"
