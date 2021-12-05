@@ -5,8 +5,6 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { Post } from '../posts/entities/posts.entity';
-
 import * as jwt from 'jsonwebtoken';
 import * as bcrypt from 'bcrypt';
 import * as yup from 'yup';

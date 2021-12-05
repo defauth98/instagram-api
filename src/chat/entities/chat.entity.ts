@@ -1,6 +1,6 @@
-import { User } from "src/user/entities/user.entity";
 import { Messages } from '../entities/messages.entity'
 import { Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { User } from '../../user/entities/user.entity';
 
 @Entity()
 export class Chat {

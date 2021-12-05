@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import { LoginDTO } from './dto/create-auth.dto';
 
 import * as bcrypt from 'bcrypt';
-import { generateToken } from 'src/user/user.service';
+import { generateToken } from '../user/user.service';
 
 @Injectable()
 export class AuthService {

@@ -1,5 +1,6 @@
-import { Post } from 'src/posts/entities/posts.entity';
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Chat } from '../../chat/entities/chat.entity';
+import { Post } from '../../posts/entities/posts.entity';
 
 @Entity()
 export class User {
@@ -16,10 +17,13 @@ export class User {
   password: string;
 
   @Column({
-    nullable:true
+    nullable: true
   })
   image_path?: string | null;
 
   @OneToMany(() => Post, post => post.User)
   posts: Post[]
+
+  @OneToMany(() => Chat, chat => chat.User)
+  chats: Chat[]
 }
